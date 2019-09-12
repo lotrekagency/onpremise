@@ -47,10 +47,10 @@ services:
 
   certbot:
     image: certbot/certbot
-    command: ./create_cert.sh
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
     volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
+      - ./config/certbot/conf:/etc/letsencrypt
+      - ./config/certbot/www:/var/www/certbot
 
   nginx:
     <<: *defaults
@@ -59,14 +59,15 @@ services:
         dockerfile: ./docker/nginx.dockerfile
     volumes:
       - ./conf.d:/etc/nginx/conf.d
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
+      - ./config/certbot/conf:/etc/letsencrypt
+      - ./config/certbot/www:/var/www/certbot
     restart: always
     ports:
       - "443:443"
       - "80:80"
     depends_on:
       - web
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
 
   web:
     <<: *defaults
