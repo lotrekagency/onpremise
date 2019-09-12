@@ -48,7 +48,7 @@ services:
   nginx:
     image: nginx:latest
     volumes:
-      - ./docker/production/conf.d:/etc/nginx/conf.d
+      - ./conf.d:/etc/nginx/conf.d
     restart: always
     ports:
       - "443:443"
