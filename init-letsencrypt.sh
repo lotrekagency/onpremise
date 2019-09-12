@@ -5,7 +5,7 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
-domains=(lotrek.net sentry.lotrek.net)
+domains=(sentry.lotrek.net)
 rsa_key_size=4096
 data_path="./config/certbot"
 email="andrea.stagi@lotrek.it" # Adding a valid address is strongly recommended
