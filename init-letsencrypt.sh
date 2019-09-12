@@ -39,7 +39,7 @@ echo
 
 
 echo "### Starting nginx ..."
-docker-compose -f docker-compose.yml up --force-recreate nginx
+docker-compose -f docker-compose.yml up --force-recreate nginx -d
 echo
 
 echo "### Deleting dummy certificate for $domains ..."
