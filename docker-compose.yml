@@ -47,7 +47,7 @@ services:
 
   certbot:
     image: certbot/certbot
-    command: certbot --nginx -d example.com -d www.example.com
+    command: certbot --nginx -d lotrek.net -d docs.lotrek.net
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
