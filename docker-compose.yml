@@ -33,7 +33,7 @@ services:
 
   memcached:
     restart: unless-stopped
-    image: memcached:1.4
+    image: memcached:1.5-alpine
 
   redis:
     restart: unless-stopped
@@ -45,10 +45,34 @@ services:
     volumes:
       - sentry-postgres:/var/lib/postgresql/data
 
+  certbot:
+    image: certbot/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    volumes:
+      - ./config/certbot/conf:/etc/letsencrypt
+      - ./config/certbot/www:/var/www/certbot
+
+  nginx:
+    <<: *defaults
+    build:
+        context: .
+        dockerfile: ./docker/nginx.dockerfile
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+      - ./config/certbot/conf:/etc/letsencrypt
+      - ./config/certbot/www:/var/www/certbot
+    restart: always
+    ports:
+      - "443:443"
+      - "80:80"
+    depends_on:
+      - web
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
   web:
     <<: *defaults
     ports:
-      - '9000:9000'
+      - "9000:9000"
 
   cron:
     <<: *defaults
