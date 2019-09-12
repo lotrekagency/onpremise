@@ -46,6 +46,7 @@ services:
       - sentry-postgres:/var/lib/postgresql/data
 
   nginx:
+    <<: *defaults
     image: nginx:latest
     volumes:
       - ./conf.d:/etc/nginx/conf.d
