@@ -47,7 +47,7 @@ services:
 
   certbot:
     image: certbot/certbot
-    command: mkdir -p /etc/letsencrypt/live/lotrek.net/ && certbot --nginx -d lotrek.net -d docs.lotrek.net && echo "DON!"
+    command: ./create_cert.sh
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
