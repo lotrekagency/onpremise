@@ -47,7 +47,9 @@ services:
 
   nginx:
     <<: *defaults
-    image: nginx:latest
+    build:
+        context: .
+        dockerfile: ./docker/nginx.dockerfile
     volumes:
       - ./conf.d:/etc/nginx/conf.d
     restart: always
